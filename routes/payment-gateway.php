@@ -15,6 +15,29 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
 
 
+
+
+
+
+
+
+
 Route::get('/payment-gateway', function () {
     return response()->json(['message' => 'Payment gateway'], 200);
 });
+
+
+
+
+
+
+
+
+Route::post('sslcommerz/success','PaymentController@success')->name('payment-success');
+
+Route::post('sslcommerz/failure','PaymentController@failure')->name('payment-failure');
+
+Route::post('sslcommerz/cancel','PaymentController@cancel')->name('payment-cancel');
+
+Route::post('sslcommerz/ipn','PaymentController@ipn')->name('payment-ipn');
+

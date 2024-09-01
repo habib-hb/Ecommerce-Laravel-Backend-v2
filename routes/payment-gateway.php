@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\PaymentController;
 
 
 
@@ -33,11 +34,13 @@ Route::get('/payment-gateway', function () {
 
 
 
-Route::post('sslcommerz/success','PaymentController@success')->name('payment-success');
+Route::post('sslcommerz/order',[PaymentController::class, 'order'])->name('payment-order');
 
-Route::post('sslcommerz/failure','PaymentController@failure')->name('payment-failure');
+Route::post('sslcommerz/success',[PaymentController::class, 'success'])->name('payment-success');
 
-Route::post('sslcommerz/cancel','PaymentController@cancel')->name('payment-cancel');
+Route::post('sslcommerz/failure',[PaymentController::class, 'failure'])->name('payment-failure');
 
-Route::post('sslcommerz/ipn','PaymentController@ipn')->name('payment-ipn');
+Route::post('sslcommerz/cancel',[PaymentController::class, 'cancel'])->name('payment-cancel');
+
+Route::post('sslcommerz/ipn',[PaymentController::class, 'ipn'])->name('payment-ipn');
 

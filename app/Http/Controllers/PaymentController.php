@@ -8,17 +8,26 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function order()
+    public function order(Request $request)
     {
 
         //  DO YOU ORDER SAVING PROCESS TO DB OR ANYTHING
 
+        $request->validate([
+            $request->email => 'required',
+            $request->total_quantity => 'required',
+            $request->total_amount => 'required',
+        ]);
+
+        //Generate Random Number
+        $trxid = rand(100000, 999999);
 
         $sslc = new SSLCommerz();
-        $sslc->amount(20)
-            ->trxid('DEMOTRX123')
-            ->product('Demo Product Name')
-            ->customer('Customer Name','custemail@email.com');
+        $sslc->amount(intval($request->total_amount))
+            ->trxid($trxid)
+            ->product($request->total_quantity . 'Items for ' . $request->total_amount . 'Tk')
+            ->customer('Awesome Customer', $request->email);
+
         return $sslc->make_payment();
 
         /**

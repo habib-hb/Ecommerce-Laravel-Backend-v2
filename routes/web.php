@@ -952,6 +952,10 @@ Route::post('api/dashboard/order_placement' , function(Request $request){
     $request->validate([
         'ordered_products' => 'required',
         'orderer_email' => 'required',
+        'orderer_address' => 'required',
+        'orderer_phone' => 'required',
+        'order_payment_option' => 'required',
+        'order_payment_status' => 'required',
     ]);
 
     $ordered_products = $request->ordered_products;
@@ -970,7 +974,7 @@ Route::post('api/dashboard/order_placement' , function(Request $request){
 
             if(count($order_check) > 0){
 
-                DB::table('orders')->where('user_id', $user_id)->update(['orders_data' => $ordered_products]);
+                DB::table('orders')->where('user_id', $user_id)->update(['orders_data' => $ordered_products, 'orderer_address' => $request->orderer_address, 'orderer_phone' => $request->orderer_phone , 'order_payment_option' => $request->order_payment_option, 'order_payment_status' => $request->order_payment_status]);
 
                 return response()->json(['message' => 'Order updated successfully'], 200);
 
@@ -978,7 +982,11 @@ Route::post('api/dashboard/order_placement' , function(Request $request){
 
             DB::table('orders')->insert(['user_id' => $user_id,
                                         'user_email' => $orderer_email,
-                                        'orders_data' => $ordered_products]);
+                                        'orders_data' => $ordered_products,
+                                        'orderer_address' => $request->orderer_address,
+                                        'orderer_phone' => $request->orderer_phone,
+                                        'order_payment_option' => $request->order_payment_option, 'order_payment_status' => $request->order_payment_status
+                                        ]);
 
             return response()->json(['message' => 'Order placed successfully'], 200);
 
